@@ -68,6 +68,107 @@
     a.addEventListener('click', () => navLinks.classList.remove('open')));
   </script>
 
+<style>
+  .carousel { position: relative; overflow: hidden; height: 70vh; min-height: 320px; }
+  .slides { display: flex; height: 100%; transition: transform .6s ease; }
+  .slide {
+    min-width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .slide::before { content: ""; position: absolute; inset: 0; background: rgba(15,23,42,.5); }
+  .caption { position: relative; text-align: center; color: #ffffff; padding: 0 20px; }
+  .caption h1 { font-size: 2.4rem; margin-bottom: 8px; color: #60a5fa; }
+  .caption p { font-size: 1.1rem; }
+  .ctrl {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,.6);
+    color: #ffffff;
+    border: none;
+    font-size: 1.5rem;
+    padding: 10px 14px;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  .ctrl:hover { background: rgba(96,165,250,.7); }
+  .prev { left: 15px; }
+  .next { right: 15px; }
+  .dots { position: absolute; bottom: 15px; width: 100%; text-align: center; }
+  .dot { display: inline-block; width: 11px; height: 11px; margin: 0 4px; background: rgba(255,255,255,.5); border-radius: 50%; cursor: pointer; }
+  .dot.active { background: #60a5fa; }
+
+  @media (max-width: 768px) {
+    .caption h1 { font-size: 1.6rem; }
+    .carousel { height: 50vh; }
+  }
+</style>
+
+<header id="home" class="carousel">
+  <div class="slides" id="slides">
+    <div class="slide" style="background-image:url('https://picsum.photos/seed/rpl1/1400/600')">
+      <div class="caption">
+        <h1>Rekayasa Perangkat Lunak</h1>
+        <p>Menciptakan Solusi Teknologi untuk Masa Depan</p>
+      </div>
+    </div>
+    <div class="slide" style="background-image:url('https://picsum.photos/seed/rpl2/1400/600')">
+      <div class="caption">
+        <h1>Belajar Coding & Desain</h1>
+        <p>Kurikulum terpadu untuk menghasilkan developer profesional</p>
+      </div>
+    </div>
+    <div class="slide" style="background-image:url('https://picsum.photos/seed/rpl3/1400/600')">
+      <div class="caption">
+        <h1>Siap Industri 4.0</h1>
+        <p>Keterampilan yang dibutuhkan dunia kerja modern</p>
+      </div>
+    </div>
+  </div>
+  <button class="ctrl prev" id="prev" aria-label="Sebelumnya">&#10094;</button>
+  <button class="ctrl next" id="next" aria-label="Berikutnya">&#10095;</button>
+  <div class="dots" id="dots"></div>
+</header>
+
+<script>
+  const slides = document.getElementById('slides');
+  const totalSlide = slides.children.length;
+  const dotsBox = document.getElementById('dots');
+  let slideIndex = 0;
+  let slideTimer;
+
+  for (let i = 0; i < totalSlide; i++) {
+    const d = document.createElement('span');
+    d.className = 'dot';
+    d.addEventListener('click', () => { goTo(i); resetTimer(); });
+    dotsBox.appendChild(d);
+  }
+
+  function goTo(i) {
+    slideIndex = (i + totalSlide) % totalSlide;
+    slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+    document.querySelectorAll('.dot').forEach((d, n) =>
+      d.classList.toggle('active', n === slideIndex)
+    );
+  }
+  function resetTimer() {
+    clearInterval(slideTimer);
+    slideTimer = setInterval(() => goTo(slideIndex + 1), 4000);
+  }
+
+  document.getElementById('next').addEventListener('click', () => { goTo(slideIndex + 1); resetTimer(); });
+  document.getElementById('prev').addEventListener('click', () => { goTo(slideIndex - 1); resetTimer(); });
+  goTo(0);
+  resetTimer();
+</script>
+    
+
   
   
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
