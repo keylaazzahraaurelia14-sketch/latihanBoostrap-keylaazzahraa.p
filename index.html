@@ -300,6 +300,143 @@
     });
   });
     </script>
+
+<style>
+  .section-form { background: #1e293b; padding: 60px 6%; }
+  .form-wrapper {
+    max-width: 500px;
+    margin: 0 auto;
+    background: #0f172a;
+    padding: 28px;
+    border-radius: 12px;
+    border: 1px solid #334155;
+    box-shadow: 0 4px 14px rgba(0,0,0,.3);
+  }
+  .form-wrapper h2 { text-align: center; color: #60a5fa; margin-bottom: 20px; }
+  .form-wrapper label { display: block; margin: 12px 0 4px; font-weight: 600; color: #e2e8f0; }
+  .form-wrapper input, .form-wrapper select { 
+    width: 100%; 
+    padding: 10px; 
+    border: 1px solid #334155; 
+    border-radius: 8px; 
+    font-size: 1rem; 
+    background: #1e293b;
+    color: #e2e8f0;
+  }
+  .form-wrapper input:focus, .form-wrapper select:focus { 
+    outline: 2px solid #60a5fa; 
+    border-color: transparent; 
+  }
+  .form-wrapper .btn { width: 100%; margin-top: 20px; }
+
+  .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.8);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal.show { display: flex; }
+  .modal-content {
+    position: relative;
+    background: #0f172a;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #334155;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    animation: muncul .3s ease;
+  }
+  .modal-content h3 { color: #60a5fa; margin-bottom: 12px; }
+  .modal-content p { color: #cbd5e1; }
+  .modal-content .btn { margin-top: 18px; }
+  .close { position: absolute; top: 10px; right: 16px; font-size: 1.8rem; cursor: pointer; color: #64748b; }
+  @keyframes muncul { from { transform: scale(.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+</style>
+
+<section id="keahlian" class="section-form">
+  <div class="form-wrapper">
+    <h2>Daftar Sekarang</h2>
+    <form id="formDaftar">
+      <label for="nama">Nama Lengkap</label>
+      <input type="text" id="nama" name="nama" placeholder="Masukkan nama Anda" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="contoh@gmail.com" required>
+
+      <label for="no_hp">Nomor HP</label>
+      <input type="tel" id="no_hp" name="no_hp" placeholder="08xxxxxxxxxx" required>
+
+      <label for="minat">Minat Bidang</label>
+      <select id="minat" name="minat" required>
+        <option value="">Pilih minat Anda</option>
+        <option value="web">Web Development</option>
+        <option value="mobile">Mobile Development</option>
+        <option value="database">Database Design</option>
+        <option value="ui-ux">UI/UX Design</option>
+        <option value="game">Game Development</option>
+        <option value="ai">AI & Machine Learning</option>
+      </select>
+
+      <button type="submit" class="btn">Daftar Sekarang</button>
+    </form>
+  </div>
+</section>
+
+<!-- MODAL KONFIRMASI -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-content">
+    <span class="close" id="closeModal">&times;</span>
+    <h3>✅ Pendaftaran Berhasil!</h3>
+    <p id="modalText"></p>
+    <button class="btn" id="okModal">Tutup</button>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('formDaftar');
+  const modal = document.getElementById('modal');
+  const modalText = document.getElementById('modalText');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nama = document.getElementById('nama').value.trim();
+    const email = document.getElementById('email').value;
+    const minat = document.getElementById('minat').value;
+
+    const minatText = {
+      'web': 'Web Development',
+      'mobile': 'Mobile Development',
+      'database': 'Database Design',
+      'ui-ux': 'UI/UX Design',
+      'game': 'Game Development',
+      'ai': 'AI & Machine Learning'
+    };
+
+    modalText.innerHTML =
+      `Terima kasih, <strong>${nama}</strong>!<br>` +
+      `Email: <strong>${email}</strong><br>` +
+      `Minat: <strong>${minatText[minat]}</strong><br><br>` +
+      `Kami akan menghubungi Anda segera. Selamat bergabung di RPL!`;
+
+    modal.classList.add('show');
+    modal.setAttribute('aria-hidden', 'false');
+    form.reset();
+  });
+
+  function tutupModal() {
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+  document.getElementById('closeModal').addEventListener('click', tutupModal);
+  document.getElementById('okModal').addEventListener('click', tutupModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) tutupModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') tutupModal(); });
+</script>
     
 
   
